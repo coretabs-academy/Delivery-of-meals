@@ -10,7 +10,7 @@ class ReverseProxied():
         self.app = app
 
     def __call__(self, environ, start_response):
-        script_name = environ.get('HTTP_X_SCRIPT_NAME3', '')
+        script_name = environ.get('HTTP_X_SCRIPT_NAME4', '')
         if script_name:
             environ['SCRIPT_NAME'] = script_name
             path_info = environ['PATH_INFO']
