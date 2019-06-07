@@ -5,6 +5,22 @@ from flask import Flask, render_template, request, url_for, redirect
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 
+class ReverseProxied():
+    def __init__(self, app):
+        self.app = app
+
+    def __call__(self, environ, start_response):
+        script_name = environ.get('HTTP_X_SCRIPT_NAME3', '')
+        if script_name:
+            environ['SCRIPT_NAME'] = script_name
+            path_info = environ['PATH_INFO']
+            if path_info.startswith(script_name):
+                environ['PATH_INFO'] = path_info[len(script_name):]
+
+        scheme = environ.get('HTTP_X_SCHEME', '')
+        if scheme:
+            environ['wsgi.url_scheme'] = scheme
+        return self.app(environ, start_response)
 
 
 ####################### SETTING ########################
@@ -18,6 +34,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///d_m.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+app.wsgi_app = ReverseProxied(app.wsgi_app)
 
 db = SQLAlchemy(app)
 
@@ -295,9 +312,3 @@ def request_done(id):
 
 
 ################# END USER #####################
-
-#############################################################################
-if __name__ == '__main__':
-    app.run()
-
-
