@@ -5,6 +5,9 @@ from flask import Flask, render_template, request, url_for, redirect
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 
+
+BASE_URL = ''
+
 class ReverseProxied():
     def __init__(self, app):
         self.app = app
@@ -12,6 +15,8 @@ class ReverseProxied():
     def __call__(self, environ, start_response):
         script_name = environ.get('HTTP_X_SCRIPT_NAME4', '')
         if script_name:
+            global BASE_URL
+            BASE_URL = script_name
             environ['SCRIPT_NAME'] = script_name
             path_info = environ['PATH_INFO']
             if path_info.startswith(script_name):
@@ -70,6 +75,11 @@ class Photos(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     url = db.Column(db.Text, nullable=False)
     meals = db.relationship('Meals', backref='photo')
+
+    @property
+    def adjusted_url(self):
+        print('qooq', BASE_URL + self.url, flush=True)
+        return BASE_URL + self.url
 
 
 db.create_all()
@@ -143,7 +153,7 @@ class operations:
 
     def get_url_photo_by_id(self, id):
         photo = Photos.query.get(id)
-        return photo.url
+        return photo.adjusted_url
 
     def update_photo(self, id, url):
         photo = Photos.query.get(id)
@@ -284,6 +294,8 @@ def requests():
 
 @app.route('/meals')
 def show_meals_for_user():
+    #print('qooq', BASE_URL, flush=True)
+
     meals = o.get_all_meal()
     return render_template('show-meals-for-users.html', meals=meals)
 
