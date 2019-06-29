@@ -1,103 +1,80 @@
 <!DOCTYPE html>
 <html lang="ar">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link
-      href="{{ url_for('static', filename='style/style.css') }}"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css?family=Cairo:200,300,400,600,700,900&display=swap&subset=arabic"
-      rel="stylesheet"
-    />
 
-    <title>عرض الوجبات</title>
-  </head>
-  <body
-    onload="document.getElementById('search-request').value = '{{ value }}'"
-  >
-    <header id="header">
-      <p>LOGO</p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link href="{{ url_for('static', filename='style/style.css') }}" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Cairo:200,300,400,600,700,900&display=swap&subset=arabic"
+    rel="stylesheet" />
 
-      <nav class="header-nav">
-        <a href="/">الصفحة الرئيسية</a>
-        <a href="/admin">صفحة الادارة</a>
-        <a href="/admin/meals">صفحة الوجبات</a>
-        <a class="header-active" href="/admin/requests">صفحة الطلبات</a>
-      </nav>
-    </header>
+  <title>عرض الوجبات</title>
+</head>
 
-    <main id="main-request">
-      <form
-        class="search-request-form"
-        action="{{ url_for('requests') }}"
-        method="POST"
-      >
-        <div>
-          <label for="search-request">:عرض</label>
+<body onload="document.getElementById('search-request').value = '{{ value }}'">
+  <header id="header">
+    <p>LOGO</p>
 
-          <select
-            name="search-request"
-            id="search-request"
-            onchange="this.form.submit();"
-          >
-            <option value="date">الكل حسب التاريخ</option>
-            <option value="ok">الطلبات التي تمت</option>
-            <option value="waiting">الطلبات قيد الانتظار</option>
-          </select>
+    <nav class="header-nav">
+      <a href="{{ url_for('homepage') }}">الصفحة الرئيسية</a>
+      <a href="{{ url_for('admin') }}">صفحة الادارة</a>
+      <a class="header-active" href="{{ url_for('show_meals_for_admin') }}">صفحة الوجبات</a>
+      <a href="{{ url_for('requests') }}">صفحة الطلبات</a>
+    </nav>
+  </header>
+
+  <main id="main-request">
+    <form class="search-request-form" action="{{ url_for('requests') }}" method="POST">
+      <div>
+        <label for="search-request">:عرض</label>
+
+        <select name="search-request" id="search-request" onchange="this.form.submit();">
+          <option value="date">الكل حسب التاريخ</option>
+          <option value="ok">الطلبات التي تمت</option>
+          <option value="waiting">الطلبات قيد الانتظار</option>
+        </select>
+      </div>
+    </form>
+
+    <p>عرض الطلبات</p>
+
+    <form action="{{ url_for('requests') }}" method="POST">
+      <section class="request-table">
+        <div class="request-table-header">
+          <p>الحالة</p>
+          <p>تاريخ الطلب</p>
+          <p>الكمية</p>
+          <p>العنوان</p>
+          <p>اسم صاحب الطلب</p>
         </div>
-      </form>
 
-      <p>عرض الطلبات</p>
-
-      <form action="{{ url_for('requests') }}" method="POST">
-        <section class="request-table">
-          <div class="request-table-header">
-            <p>الحالة</p>
-            <p>تاريخ الطلب</p>
-            <p>الكمية</p>
-            <p>العنوان</p>
-            <p>اسم صاحب الطلب</p>
+        {% for request in requests %}
+        <div>
+          <div class="checkbox-status-form">
+            {% if request.is_active == True %}
+            <p id="{{ request.id }}">تم</p>
+            <input type="checkbox" id="{{ request.id }}g" onchange="on_active('{{ request.id }}')" value="False"
+              name="checkbox-status-form-{{ request.id }}" checked />
+            {% else %}
+            <p id="{{ request.id }}">قيد الانتظار</p>
+            <input type="checkbox" id="{{ request.id }}g" onchange="on_active('{{ request.id }}')" value="False"
+              name="checkbox-status-form-{{ request.id }}" />
+            {% endif %}
           </div>
+          <p>
+            {{ request.request_date.strftime("%A, %d %B %Y %I:%M:%S %p") }}
+          </p>
+          <p>{{ request.amount }}</p>
+          <p>{{ request.address }}</p>
+          <p>{{ request.name_user }}</p>
+        </div>
+        {% endfor %}
+      </section>
+    </form>
+  </main>
 
-          {% for request in requests %}
-          <div>
-            <div class="checkbox-status-form">
-              {% if request.is_active == True %}
-              <p id="{{ request.id }}">تم</p>
-              <input
-                type="checkbox"
-                id="{{ request.id }}g"
-                onchange="on_active('{{ request.id }}')"
-                value="False"
-                name="checkbox-status-form-{{ request.id }}"
-                checked
-              />
-              {% else %}
-              <p id="{{ request.id }}">قيد الانتظار</p>
-              <input
-                type="checkbox"
-                id="{{ request.id }}g"
-                onchange="on_active('{{ request.id }}')"
-                value="False"
-                name="checkbox-status-form-{{ request.id }}"
-              />
-              {% endif %}
-            </div>
-            <p>
-              {{ request.request_date.strftime("%A, %d %B %Y %I:%M:%S %p") }}
-            </p>
-            <p>{{ request.amount }}</p>
-            <p>{{ request.address }}</p>
-            <p>{{ request.name_user }}</p>
-          </div>
-          {% endfor %}
-        </section>
-      </form>
-    </main>
+  <script src="{{url_for('static', filename='js/show-request-for-admin.js')}}"></script>
+</body>
 
-    <script src="{{url_for('static', filename='js/show-request-for-admin.js')}}"></script>
-  </body>
 </html>

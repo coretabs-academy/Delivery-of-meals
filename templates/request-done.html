@@ -1,56 +1,59 @@
 <!DOCTYPE html>
 <html lang="ar">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-    <link href="{{ url_for('static', filename='style/style.css') }}" rel="stylesheet">
-    <title>تم طلبك بنجاح</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-  </head>
-  <body>
-    <header id="header">
-      <p>LOGO</p>
+  <link href="{{ url_for('static', filename='style/style.css') }}" rel="stylesheet">
+  <title>تم طلبك بنجاح</title>
 
-      <nav class="header-nav">
-        <a href="/">الصفحة الرئيسية</a>
-        <a href="/meals">صفحة الوجبات</a>
-      </nav>
-    </header>
+</head>
 
-    <main id="done">
+<body>
+  <header id="header">
+    <p>LOGO</p>
+
+    <nav class="header-nav">
+      <a href="{{ url_for('homepage') }}">الصفحة الرئيسية</a>
+      <a href="{{ url_for('show_meals_for_user') }}">صفحة الوجبات</a>
+    </nav>
+  </header>
+
+  <main id="done">
+    <div>
+      <p class="done-header">تم الطلب بنجاح</p>
+
       <div>
-        <p class="done-header">تم الطلب بنجاح</p>
+        <p>
+          : أهلا بك يا {{ request.name_user }} لقد قمت بطلب وجبة من خلال
+          موقعنا و هذه تفاصيل طلبك
+        </p>
 
-        <div>
-          <p>
-            : أهلا بك يا {{ request.name_user }} لقد قمت بطلب وجبة من خلال
-            موقعنا و هذه تفاصيل طلبك
-          </p>
-
-          <div class="details">
-            <div>
-              <p>الاسم</p>
-              <p>{{ request.name_user }}</p>
-            </div>
-            <div>
-              <p>العنوان</p>
-              <p>{{ request.address }}</p>
-            </div>
-            <div>
-              <p>الوجبة</p>
-              <p>{{ request.meal.name }}</p>
-            </div>
-            <div>
-              <p>الكمية</p>
-              <p>{{ request.amount }}</p>
-            </div>
+        <div class="details">
+          <div>
+            <p>الاسم</p>
+            <p>{{ request.name_user }}</p>
           </div>
-
-          <p class="done-time">الوقت المقدر لوصول الطلب : ساعة واحدة</p>
+          <div>
+            <p>العنوان</p>
+            <p>{{ request.address }}</p>
+          </div>
+          <div>
+            <p>الوجبة</p>
+            <p>{{ request.meal.name }}</p>
+          </div>
+          <div>
+            <p>الكمية</p>
+            <p>{{ request.amount }}</p>
+          </div>
         </div>
+
+        <p class="done-time">الوقت المقدر لوصول الطلب : ساعة واحدة</p>
       </div>
-    </main>
-  </body>
+    </div>
+  </main>
+</body>
+
 </html>

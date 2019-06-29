@@ -1,52 +1,48 @@
 <!DOCTYPE html>
 <html lang="ar">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link
-      href="{{ url_for('static', filename='style/style.css') }}"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css?family=Cairo:200,300,400,600,700,900&display=swap&subset=arabic"
-      rel="stylesheet"
-    />
 
-    <title>خدمة توصيل الوجبات</title>
-  </head>
-  <body>
-    <div id="homepage">
-      <div class="image-container">
-        <header id="header">
-          <p>LOGO</p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link href="{{ url_for('static', filename='style/style.css') }}" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Cairo:200,300,400,600,700,900&display=swap&subset=arabic"
+    rel="stylesheet" />
 
-          <nav class="header-nav">
-            <div>
-              <a class="link-auth" href="#">تسجيل دخول</a>
-              <span> | </span>
-              <a class="link-auth" href="#">مستخدم جديد</a>
-              <a href="/meals">صفحة الوجبات</a>
-              <a href="#">الاستفسارات</a>
-              <a href="#">اتصل بنا</a>
-            </div>
-          </nav>
-        </header>
+  <title>خدمة توصيل الوجبات</title>
+</head>
 
-        <section>
-          <h1>خدمة توصيل الوجبات</h1>
-          <p class="slogan">أسرع خدمة توصيل وجبات في العالم العربي</p>
+<body>
+  <div id="homepage">
+    <div class="image-container">
+      <header id="header">
+        <p>LOGO</p>
 
-          <a href="{{ url_for('show_meals_for_user') }}" class="order"
-            >اطلــــــب الآن</a
-          >
-        </section>
+        <nav class="header-nav">
+          <div>
+            <a class="link-auth" href="#">تسجيل دخول</a>
+            <span> | </span>
+            <a class="link-auth" href="#">مستخدم جديد</a>
+            <a href="{{ url_for('show_meals_for_user') }}">صفحة الوجبات</a>
+            <a href="#">الاستفسارات</a>
+            <a href="#">اتصل بنا</a>
+          </div>
+        </nav>
+      </header>
 
-        <footer class="homepage-footer">
-          صهيب سلامات <span>|</span> أحمد رمزي البهوتي <span>|</span> عبدالرحمن
-          الجلاد
-        </footer>
-      </div>
+      <section>
+        <h1>خدمة توصيل الوجبات</h1>
+        <p class="slogan">أسرع خدمة توصيل وجبات في العالم العربي</p>
+
+        <a href="{{ url_for('show_meals_for_user') }}" class="order">اطلــــــب الآن</a>
+      </section>
+
+      <footer class="homepage-footer">
+        صهيب سلامات <span>|</span> أحمد رمزي البهوتي <span>|</span> عبدالرحمن
+        الجلاد
+      </footer>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>

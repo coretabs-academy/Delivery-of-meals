@@ -1,67 +1,56 @@
 <!DOCTYPE html>
 <html lang="ar">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link
-      href="{{ url_for('static', filename='style/style.css') }}"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css?family=Cairo:200,300,400,600,700,900&display=swap&subset=arabic"
-      rel="stylesheet"
-    />
 
-    <title>عرض الوجبات</title>
-  </head>
-  <body>
-    <header id="header">
-      <p>LOGO</p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link href="{{ url_for('static', filename='style/style.css') }}" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Cairo:200,300,400,600,700,900&display=swap&subset=arabic"
+    rel="stylesheet" />
 
-      <nav class="header-nav">
-        <a href="/">الصفحة الرئيسية</a>
-        <a href="/admin">صفحة الادارة</a>
-        <a class="header-active" href="/admin/meals">صفحة الوجبات</a>
-        <a href="/admin/requests">صفحة الطلبات</a>
-      </nav>
-    </header>
+  <title>عرض الوجبات</title>
+</head>
 
-    <main id="main-edit">
-      <section class="meals-container">
-        <!-- Template -->
-        {% for meal in meals %}
-        <div class="meal">
-          <p>{{ meal.name }}</p>
-          <img src="{{ meal.photo.url }}" />
+<body>
+  <header id="header">
+    <p>LOGO</p>
 
-          <div>
-            <button
-              onclick="location.href='{{url_for('delete_meal',id = meal.id)}}'"
-              class="delete-btn"
-            >
-              حـــذف
-            </button>
-            <button
-              onclick="location.href='{{url_for('update_meal',id = meal.id)}}'"
-              class="edit-btn"
-            >
-              تعديــل
-            </button>
-          </div>
+    <nav class="header-nav">
+      <a href="{{ url_for('homepage') }}">الصفحة الرئيسية</a>
+      <a href="{{ url_for('admin') }}">صفحة الادارة</a>
+      <a class="header-active" href="{{ url_for('show_meals_for_admin') }}">صفحة الوجبات</a>
+      <a href="{{ url_for('requests') }}">صفحة الطلبات</a>
+    </nav>
+  </header>
+
+  <main id="main-edit">
+    <section class="meals-container">
+      <!-- Template -->
+      {% for meal in meals %}
+      <div class="meal">
+        <p>{{ meal.name }}</p>
+        <img src="{{ meal.photo.adjusted_url }}" />
+
+        <div>
+          <button onclick="location.href='{{url_for('delete_meal',id = meal.id)}}'" class="delete-btn">
+            حـــذف
+          </button>
+          <button onclick="location.href='{{url_for('update_meal',id = meal.id)}}'" class="edit-btn">
+            تعديــل
+          </button>
         </div>
-        {% endfor %}
-        <div class="meal">
-          <p>اضافة وجبة</p>
-          <a href="/admin/meals/add_meal"
-            ><img
-              src="/static/images/assets/add1.png"
-              style="height: 180px; padding: 1px 50px;"
-          /></a>
-        </div>
-      </section>
-    </main>
+      </div>
+      {% endfor %}
+      <div class="meal">
+        <p>اضافة وجبة</p>
+        <a href="{{ url_for('add_meal') }}"><img src={{ url_for('static', filename='images/assets/add1.png') }}
+            style="height: 180px; padding: 1px 50px;" /></a>
+      </div>
+    </section>
+  </main>
 
-    <footer id="footer"></footer>
-  </body>
+  <footer id="footer"></footer>
+</body>
+
 </html>
